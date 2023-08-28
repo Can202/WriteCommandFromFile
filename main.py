@@ -12,7 +12,7 @@ class App:
         self.root.title("Write Command From File")
 
         self.frame = ttk.Frame(self.root, padding=10)
-        self.frame.grid(row=0, column=0)
+        self.frame.pack(expand=True, fill="both")
         
         self.shuffle = False
         self.styles()
@@ -32,23 +32,24 @@ class App:
         self.EntryPrefix.grid(row=1, column=1, padx=5, pady=5)
         
         self.LabelOption = tkinter.Label(self.frame, text="Option:")
-        self.LabelOption.grid(row=3, column=0, padx=5, pady=5)
+        self.LabelOption.grid(row=2, column=0, padx=5, pady=5)
         self.Option = ttk.OptionMenu(self.frame, self.option_var, self.options[0], *self.options)
-        self.Option.grid(row=3, column=1, padx=5, pady=5)
+        self.Option.grid(row=2, column=1, padx=5, pady=5)
 
         self.LabelSuffix = tkinter.Label(self.frame, text="Suffix:")
-        self.LabelSuffix.grid(row=5, column=0, padx=5, pady=5)
+        self.LabelSuffix.grid(row=3, column=0, padx=5, pady=5)
         self.EntrySuffix = tkinter.Entry(self.frame)
-        self.EntrySuffix.grid(row=5, column=1, padx=5, pady=5)
+        self.EntrySuffix.grid(row=3, column=1, padx=5, pady=5)
 
         self.LabelShuffle = tkinter.Label(self.frame, text="Shuffle: ")
-        self.LabelShuffle.grid(row=7, column=0, padx=5, pady=5)
+        self.LabelShuffle.grid(row=4, column=0, padx=5, pady=5)
         self.ButtonShuffle = ttk.Button(self.frame, text="Shuffle", style="Shuffle.TButton", command=self.shufflechange)
-        self.ButtonShuffle.grid(row=7, column=1, padx=5, pady=5)
+        self.ButtonShuffle.grid(row=4, column=1, padx=5, pady=5)
 
 
         self.submit_button = ttk.Button(self.frame, text="Start", style="Custom2.TButton", command=self.start)
-        self.submit_button.grid(row=9, column=1, padx=5, pady=5)
+        self.submit_button.grid(row=5, column=1, padx=5, pady=5)
+        self.reconfigure()
     
     def shufflechange(self):
         self.shuffle = not self.shuffle
@@ -146,6 +147,16 @@ class App:
                         foreground="black",
                         background="black",
                         padding=(5, 3))
+    def reconfigure(self):
+        self.frame.grid_rowconfigure(0, weight=1)
+        self.frame.grid_rowconfigure(1, weight=1)
+        self.frame.grid_rowconfigure(2, weight=1)
+        self.frame.grid_rowconfigure(3, weight=1)
+        self.frame.grid_rowconfigure(4, weight=1)
+        self.frame.grid_rowconfigure(5, weight=1)
+
+        self.frame.grid_columnconfigure(0, weight=1)
+        self.frame.grid_columnconfigure(1, weight=1)
 
 if __name__ == "__main__":
     app = App()
