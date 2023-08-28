@@ -1,5 +1,6 @@
 import pyautogui
 import tkinter
+from tkinter import ttk
 import time
 import threading
 import os
@@ -10,7 +11,7 @@ class App:
         self.root = tkinter.Tk()
         self.root.title("Write Command From File")
 
-        self.frame = tkinter.ttk.Frame(self.root, padding=10)
+        self.frame = ttk.Frame(self.root, padding=10)
         self.frame.grid(row=0, column=0)
         
         self.shuffle = False
@@ -32,7 +33,7 @@ class App:
         
         self.LabelOption = tkinter.Label(self.frame, text="Option:")
         self.LabelOption.grid(row=3, column=0, padx=5, pady=5)
-        self.Option = tkinter.OptionMenu(self.frame, self.option_var, *self.options)
+        self.Option = ttk.OptionMenu(self.frame, self.option_var, self.options[0], *self.options)
         self.Option.grid(row=3, column=1, padx=5, pady=5)
 
         self.LabelSuffix = tkinter.Label(self.frame, text="Suffix:")
@@ -42,11 +43,11 @@ class App:
 
         self.LabelShuffle = tkinter.Label(self.frame, text="Shuffle: ")
         self.LabelShuffle.grid(row=7, column=0, padx=5, pady=5)
-        self.ButtonShuffle = tkinter.ttk.Button(self.frame, text="Shuffle", style="Shuffle.TButton", command=self.shufflechange)
+        self.ButtonShuffle = ttk.Button(self.frame, text="Shuffle", style="Shuffle.TButton", command=self.shufflechange)
         self.ButtonShuffle.grid(row=7, column=1, padx=5, pady=5)
 
 
-        self.submit_button = tkinter.ttk.Button(self.frame, text="Start", style="Custom2.TButton", command=self.start)
+        self.submit_button = ttk.Button(self.frame, text="Start", style="Custom2.TButton", command=self.start)
         self.submit_button.grid(row=9, column=1, padx=5, pady=5)
     
     def shufflechange(self):
@@ -133,7 +134,7 @@ class App:
         else:
             return ["One", "Two"]
     def styles(self):
-        self.style = tkinter.ttk.Style()
+        self.style = ttk.Style()
         self.style.configure("Shuffle.TButton",
                         font=("Helvetica", 10),
                         foreground="darkred",
