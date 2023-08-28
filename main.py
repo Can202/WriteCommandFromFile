@@ -8,7 +8,7 @@ import random
 class App:
     def __init__(self) -> None:
         self.root = tkinter.Tk()
-        self.root.title("Window")
+        self.root.title("Write Command From File")
 
         self.frame = tkinter.ttk.Frame(self.root, padding=10)
         self.frame.grid(row=0, column=0)
