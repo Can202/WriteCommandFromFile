@@ -10,6 +10,7 @@ class App:
     def __init__(self) -> None:
         self.root = tkinter.Tk()
         self.root.title("Write Command From File")
+        self.root.minsize(210, 300)
 
         self.frame = ttk.Frame(self.root, padding=10)
         self.frame.pack(expand=True, fill="both")
