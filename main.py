@@ -122,16 +122,19 @@ class App:
         for i in range(len(list)):
             if self.breaking:
                 print("Breaked")
+                self.canvas.itemconfig(self.mini_circle, fill="red")
                 return
             self.Timing(3)
             if self.breaking:
                 print("Breaked")
+                self.canvas.itemconfig(self.mini_circle, fill="red")
                 return
             text = f"{prefix}{list[i]}{suffix}"
             pyautogui.typewrite(text, interval=0.001)
             print(text)
             if self.breaking:
                 print("Breaked")
+                self.canvas.itemconfig(self.mini_circle, fill="red")
                 return
 
         self.canvas.itemconfig(self.mini_circle, fill="red")
