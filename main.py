@@ -16,17 +16,16 @@ class App:
         self.frame.pack(expand=True, fill="both")
         
         self.shuffle = False
+        self.breaking = False
         self.styles()
 
         self.options = self.getFiles()
         self.option_var = tkinter.StringVar()
         self.option_var.set(self.options[0])  # Set the default selected option
 
-        self.LabelStatusS = tkinter.Label(self.frame, text="Status: ")
-        self.LabelStatusS.grid(row=0, column=0, padx=5, pady=5)
+        self.LabelStatus = tkinter.Label(self.frame, text="Status: ")
+        self.LabelStatus.grid(row=0, column=0, padx=5, pady=5)
 
-        self.LabelStatus = tkinter.Label(self.frame, text="Not Working")
-        #self.LabelStatus.grid(row=0, column=1, padx=5, pady=5)
         self.canvas = tkinter.Canvas(self.frame, width=30, height=30)
         self.canvas.grid(row=0, column=1)
         self.mini_circle = self.canvas.create_oval(5,5,25,25,
@@ -55,7 +54,13 @@ class App:
 
         self.submit_button = ttk.Button(self.frame, text="Start", style="Custom2.TButton", command=self.start)
         self.submit_button.grid(row=5, column=1, padx=5, pady=5)
+
+        self.break_button = ttk.Button(self.frame, text="Break", style="Break.TButton", command=self.breakTheProccess)
+        self.break_button.grid(row=6, column=1, padx=5, pady=5)
         self.reconfigure()
+
+    def breakTheProccess(self):
+        self.breaking = True
     
     def shufflechange(self):
         self.shuffle = not self.shuffle
@@ -66,8 +71,8 @@ class App:
 
     
     def start(self):
+        self.breaking = False
 
-        self.LabelStatus.config(text=f"Working")
         self.canvas.itemconfig(self.mini_circle, fill="green")
 
         prefix = self.EntryPrefix.get()
@@ -115,12 +120,20 @@ class App:
             random.shuffle(list)
 
         for i in range(len(list)):
+            if self.breaking:
+                print("Breaked")
+                return
             self.Timing(3)
+            if self.breaking:
+                print("Breaked")
+                return
             text = f"{prefix}{list[i]}{suffix}"
             pyautogui.typewrite(text, interval=0.001)
             print(text)
-        
-        self.LabelStatus.config(text=f"Not Working")
+            if self.breaking:
+                print("Breaked")
+                return
+
         self.canvas.itemconfig(self.mini_circle, fill="red")
 
 
@@ -149,6 +162,11 @@ class App:
                         foreground="darkred",
                         background="black",
                         padding=(5, 3))
+        self.style.configure("Break.TButton",
+                        font=("Helvetica", 10),
+                        foreground="darkred",
+                        background="black",
+                        padding=(5, 3))
         
         self.style.configure("Custom2.TButton",
                         font=("Helvetica", 14),
@@ -162,6 +180,7 @@ class App:
         self.frame.grid_rowconfigure(3, weight=1)
         self.frame.grid_rowconfigure(4, weight=1)
         self.frame.grid_rowconfigure(5, weight=1)
+        self.frame.grid_rowconfigure(6, weight=1)
 
         self.frame.grid_columnconfigure(0, weight=1)
         self.frame.grid_columnconfigure(1, weight=1)
