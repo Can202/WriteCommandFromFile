@@ -9,51 +9,57 @@ class App:
     def __init__(self) -> None:
         self.root = tkinter.Tk()
         self.root.title("Window")
+
+        self.frame = tkinter.ttk.Frame(self.root, padding=10)
+        self.frame.grid(row=0, column=0)
         
         self.shuffle = False
+        self.styles()
 
         self.options = self.getFiles()
         self.option_var = tkinter.StringVar()
         self.option_var.set(self.options[0])  # Set the default selected option
 
-        self.LabelStatus = tkinter.Label(self.root, text="Status: Not Working")
-        self.LabelStatus.pack()
+        self.LabelStatusS = tkinter.Label(self.frame, text="Status: ")
+        self.LabelStatusS.grid(row=0, column=0, padx=5, pady=5)
+        self.LabelStatus = tkinter.Label(self.frame, text="Not Working")
+        self.LabelStatus.grid(row=0, column=1, padx=5, pady=5)
 
-        self.LabelPrefix = tkinter.Label(self.root, text="Prefix:")
-        self.LabelPrefix.pack()
-        self.EntryPrefix = tkinter.Entry(self.root)
-        self.EntryPrefix.pack()
+        self.LabelPrefix = tkinter.Label(self.frame, text="Prefix:")
+        self.LabelPrefix.grid(row=1, column=0, padx=5, pady=5)
+        self.EntryPrefix = tkinter.Entry(self.frame)
+        self.EntryPrefix.grid(row=1, column=1, padx=5, pady=5)
         
-        self.LabelOption = tkinter.Label(self.root, text="Option:")
-        self.LabelOption.pack()
-        self.Option = tkinter.OptionMenu(self.root, self.option_var, *self.options)
-        self.Option.pack()
+        self.LabelOption = tkinter.Label(self.frame, text="Option:")
+        self.LabelOption.grid(row=3, column=0, padx=5, pady=5)
+        self.Option = tkinter.OptionMenu(self.frame, self.option_var, *self.options)
+        self.Option.grid(row=3, column=1, padx=5, pady=5)
 
-        self.LabelSuffix = tkinter.Label(self.root, text="Suffix:")
-        self.LabelSuffix.pack()
-        self.EntrySuffix = tkinter.Entry(self.root)
-        self.EntrySuffix.pack()
+        self.LabelSuffix = tkinter.Label(self.frame, text="Suffix:")
+        self.LabelSuffix.grid(row=5, column=0, padx=5, pady=5)
+        self.EntrySuffix = tkinter.Entry(self.frame)
+        self.EntrySuffix.grid(row=5, column=1, padx=5, pady=5)
 
-        self.LabelShuffle = tkinter.Label(self.root, text="Shuffle: No")
-        self.LabelShuffle.pack()
-        self.ButtonShuffle = tkinter.Button(self.root, text="Shuffle", command=self.shufflechange)
-        self.ButtonShuffle.pack()
+        self.LabelShuffle = tkinter.Label(self.frame, text="Shuffle: ")
+        self.LabelShuffle.grid(row=7, column=0, padx=5, pady=5)
+        self.ButtonShuffle = tkinter.ttk.Button(self.frame, text="Shuffle", style="Shuffle.TButton", command=self.shufflechange)
+        self.ButtonShuffle.grid(row=7, column=1, padx=5, pady=5)
 
 
-        self.submit_button = tkinter.Button(self.root, text="Start", command=self.start)
-        self.submit_button.pack()
+        self.submit_button = tkinter.ttk.Button(self.frame, text="Start", style="Custom2.TButton", command=self.start)
+        self.submit_button.grid(row=9, column=1, padx=5, pady=5)
     
     def shufflechange(self):
         self.shuffle = not self.shuffle
         if self.shuffle:
-            self.LabelShuffle.config(text="Shuffle: Yes")
+            self.style.configure("Shuffle.TButton", foreground = "green")
         else:
-            self.LabelShuffle.config(text="Shuffle: No")
+            self.style.configure("Shuffle.TButton", foreground = "darkred")
 
     
     def start(self):
 
-        self.LabelStatus.config(text=f"Status: Working")
+        self.LabelStatus.config(text=f"Working")
 
         prefix = self.EntryPrefix.get()
         suffix = self.EntrySuffix.get() + "\n"
@@ -105,7 +111,7 @@ class App:
             pyautogui.typewrite(text, interval=0.001)
             print(text)
         
-        self.LabelStatus.config(text=f"Status: Not Working")
+        self.LabelStatus.config(text=f"Not Working")
 
 
     def Timing(self, tim):
@@ -126,6 +132,19 @@ class App:
             return lines
         else:
             return ["One", "Two"]
+    def styles(self):
+        self.style = tkinter.ttk.Style()
+        self.style.configure("Shuffle.TButton",
+                        font=("Helvetica", 10),
+                        foreground="darkred",
+                        background="black",
+                        padding=(5, 3))
+        
+        self.style.configure("Custom2.TButton",
+                        font=("Helvetica", 14),
+                        foreground="black",
+                        background="black",
+                        padding=(5, 3))
 
 if __name__ == "__main__":
     app = App()
