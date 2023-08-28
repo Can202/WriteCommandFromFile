@@ -3,11 +3,14 @@ import tkinter
 import time
 import threading
 import os
+import random
 
 class App:
     def __init__(self) -> None:
         self.root = tkinter.Tk()
         self.root.title("Window")
+        
+        self.shuffle = False
 
         self.options = self.getFiles()
         self.option_var = tkinter.StringVar()
@@ -31,8 +34,22 @@ class App:
         self.EntrySuffix = tkinter.Entry(self.root)
         self.EntrySuffix.pack()
 
-        self.submit_button = tkinter.Button(self.root, text="Submit", command=self.start)
+        self.LabelShuffle = tkinter.Label(self.root, text="Shuffle: No")
+        self.LabelShuffle.pack()
+        self.ButtonShuffle = tkinter.Button(self.root, text="Shuffle", command=self.shufflechange)
+        self.ButtonShuffle.pack()
+
+
+        self.submit_button = tkinter.Button(self.root, text="Start", command=self.start)
         self.submit_button.pack()
+    
+    def shufflechange(self):
+        self.shuffle = not self.shuffle
+        if self.shuffle:
+            self.LabelShuffle.config(text="Shuffle: Yes")
+        else:
+            self.LabelShuffle.config(text="Shuffle: No")
+
     
     def start(self):
 
@@ -59,7 +76,6 @@ class App:
                 files[i] = files[i][:-4]
             else:
                 files.remove(files[i])
-
         return files
         
 
@@ -72,6 +88,10 @@ class App:
         print("Started")
         self.Timing(1.5)
         print("Printing")
+
+        if self.shuffle:
+            random.shuffle(list)
+
         for i in range(len(list)):
             self.Timing(3)
             text = f"{prefix}{list[i]}{suffix}"
@@ -93,6 +113,8 @@ class App:
 
             for i in range(len(lines)):
                 lines[i] = lines[i].strip()
+
+            
 
             return lines
         else:
