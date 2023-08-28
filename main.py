@@ -76,6 +76,13 @@ class App:
                 files[i] = files[i][:-4]
             else:
                 files.remove(files[i])
+
+        if len(files) == 0:
+            with open("files/nothing.txt", 'w') as file:
+                file.write('something here\n')
+                file.write('something here\n')
+            files.append("nothing")
+
         return files
         
 
