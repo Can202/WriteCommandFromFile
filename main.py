@@ -9,7 +9,7 @@ import random
 class App:
     def __init__(self) -> None:
         self.root = tkinter.Tk()
-        self.root.title("Write Command From File")
+        self.root.title("")
         self.root.minsize(210, 300)
 
         self.frame = ttk.Frame(self.root, padding=10)
@@ -24,8 +24,13 @@ class App:
 
         self.LabelStatusS = tkinter.Label(self.frame, text="Status: ")
         self.LabelStatusS.grid(row=0, column=0, padx=5, pady=5)
+
         self.LabelStatus = tkinter.Label(self.frame, text="Not Working")
-        self.LabelStatus.grid(row=0, column=1, padx=5, pady=5)
+        #self.LabelStatus.grid(row=0, column=1, padx=5, pady=5)
+        self.canvas = tkinter.Canvas(self.frame, width=30, height=30)
+        self.canvas.grid(row=0, column=1)
+        self.mini_circle = self.canvas.create_oval(5,5,25,25,
+            fill="red", outline="black",  width=1)
 
         self.LabelPrefix = tkinter.Label(self.frame, text="Prefix:")
         self.LabelPrefix.grid(row=1, column=0, padx=5, pady=5)
@@ -63,6 +68,7 @@ class App:
     def start(self):
 
         self.LabelStatus.config(text=f"Working")
+        self.canvas.itemconfig(self.mini_circle, fill="green")
 
         prefix = self.EntryPrefix.get()
         suffix = self.EntrySuffix.get() + "\n"
@@ -115,6 +121,7 @@ class App:
             print(text)
         
         self.LabelStatus.config(text=f"Not Working")
+        self.canvas.itemconfig(self.mini_circle, fill="red")
 
 
     def Timing(self, tim):
@@ -158,6 +165,7 @@ class App:
 
         self.frame.grid_columnconfigure(0, weight=1)
         self.frame.grid_columnconfigure(1, weight=1)
+    
 
 if __name__ == "__main__":
     app = App()
