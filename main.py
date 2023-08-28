@@ -5,6 +5,7 @@ import time
 import threading
 import os
 import random
+import subprocess
 
 class App:
     def __init__(self) -> None:
@@ -46,22 +47,47 @@ class App:
         self.EntrySuffix = tkinter.Entry(self.frame)
         self.EntrySuffix.grid(row=3, column=1, padx=5, pady=5)
 
-        self.LabelShuffle = tkinter.Label(self.frame, text="Shuffle: ")
-        self.LabelShuffle.grid(row=4, column=0, padx=5, pady=5)
-        self.ButtonShuffle = ttk.Button(self.frame, text="Shuffle", style="Shuffle.TButton", command=self.shufflechange)
-        self.ButtonShuffle.grid(row=4, column=1, padx=5, pady=5)
-
 
         self.submit_button = ttk.Button(self.frame, text="Start", style="Custom2.TButton", command=self.start)
-        self.submit_button.grid(row=5, column=1, padx=5, pady=5)
+        self.submit_button.grid(row=4, column=1, padx=5, pady=5)
+        
+        self.ButtonShuffle = ttk.Button(self.frame, text="Shuffle", style="Shuffle.TButton", command=self.shufflechange)
+        self.ButtonShuffle.grid(row=5, column=1, padx=5, pady=5)
 
         self.break_button = ttk.Button(self.frame, text="Break", style="Break.TButton", command=self.breakTheProccess)
         self.break_button.grid(row=6, column=1, padx=5, pady=5)
+        
+        self.open_button = ttk.Button(self.frame, text="Open Files", style="Open.TButton", command=self.openPATH)
+        self.open_button.grid(row=7, column=1, padx=5, pady=5)
+        
+        #self.reload_button = ttk.Button(self.frame, text="Reload", style="Open.TButton", command=self.reload)
+        #self.reload_button.grid(row=8, column=1, padx=5, pady=5)
         self.reconfigure()
 
     def breakTheProccess(self):
         self.breaking = True
+        print("Breaked")
+        self.canvas.itemconfig(self.mini_circle, fill="red")
     
+    def openPATH(self):
+        subprocess.Popen(['explorer', "files"])
+    
+    def reload(self):
+        print("reload")
+        newoptions = self.getFiles()
+        self.option_var = tkinter.StringVar()
+        self.option_var.set(newoptions[0])
+
+        menu = self.Option['menu']
+        menu.delete(0, 'end')
+            
+        # Add the updated options
+        for option in newoptions:
+            menu.add_command(label=option, command=tkinter._setit(self.option_var, option))
+        
+        self.option_var.set(newoptions[0])
+        self.options = None
+        self.options = newoptions
     def shufflechange(self):
         self.shuffle = not self.shuffle
         if self.shuffle:
@@ -121,20 +147,14 @@ class App:
 
         for i in range(len(list)):
             if self.breaking:
-                print("Breaked")
-                self.canvas.itemconfig(self.mini_circle, fill="red")
                 return
             self.Timing(3)
             if self.breaking:
-                print("Breaked")
-                self.canvas.itemconfig(self.mini_circle, fill="red")
                 return
             text = f"{prefix}{list[i]}{suffix}"
             pyautogui.typewrite(text, interval=0.001)
             print(text)
             if self.breaking:
-                print("Breaked")
-                self.canvas.itemconfig(self.mini_circle, fill="red")
                 return
 
         self.canvas.itemconfig(self.mini_circle, fill="red")
@@ -170,6 +190,11 @@ class App:
                         foreground="darkred",
                         background="black",
                         padding=(5, 3))
+        self.style.configure("Open.TButton",
+                        font=("Helvetica", 10),
+                        foreground="green",
+                        background="black",
+                        padding=(5, 3))
         
         self.style.configure("Custom2.TButton",
                         font=("Helvetica", 14),
@@ -184,6 +209,8 @@ class App:
         self.frame.grid_rowconfigure(4, weight=1)
         self.frame.grid_rowconfigure(5, weight=1)
         self.frame.grid_rowconfigure(6, weight=1)
+        self.frame.grid_rowconfigure(7, weight=1)
+        self.frame.grid_rowconfigure(7, weight=1)
 
         self.frame.grid_columnconfigure(0, weight=1)
         self.frame.grid_columnconfigure(1, weight=1)
